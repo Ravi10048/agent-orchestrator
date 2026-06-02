@@ -1,0 +1,17 @@
+# ─── runtime ─────────────────────────────────────────────
+fastapi>=0.115
+uvicorn[standard]>=0.32
+sqlalchemy>=2.0
+pydantic>=2.9
+pydantic-settings>=2.6
+orjson>=3.10
+openai>=1.54
+httpx>=0.27
+jsonschema>=4.23
+apscheduler>=3.10
+python-multipart>=0.0.12
+
+# ─── dev / test (harmless in the image; keeps one-command simple) ───
+pytest>=8.3
+pytest-asyncio>=0.24
+ruff>=0.7

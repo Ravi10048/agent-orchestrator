@@ -1,0 +1,19 @@
+# One-command local stack: backend (FastAPI) + frontend (nginx serving the Vite build).
+# No external infra — Groq/Telegram are cloud SaaS (free tiers); Ollama is optional/local.
+services:
+  backend:
+    build: ./backend
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data        # SQLite persistence across restarts
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"               # nginx serves the build; proxies /api + /ws -> backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
