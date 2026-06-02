@@ -48,7 +48,7 @@ flowchart TB
   EXT["External tool APIs (HTTP) — imported via OpenAPI"]
 
   UI <--> REST
-  MON <-. live events .- WS
+  WS -. live events .-> MON
   REST --> RS --> EX --> AG --> GW --> LLMP
   EX --> TR --> EXT
   AG <--> BUS
@@ -58,9 +58,6 @@ flowchart TB
   CH --> RS
   SCH --> RS
   CFG --> REST
-
-  classDef p fill:#1e1b4b,stroke:#6d5efc,color:#fff;
-  class RT,API p;
 ```
 
 - **Build plane** — design agents and a workflow graph in the UI, validate, save.

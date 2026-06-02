@@ -11,6 +11,8 @@ Built for the Yuno AI-Engineer challenge. Stack is **all free**: FastAPI + a cus
 graph-executor runtime + SQLite + **Groq** (free LLM) + **Telegram** (free channel) +
 React 19 / React Flow.
 
+![Agent Orchestrator — the live, tenant-aware Dashboard](docs/img/app-screenshot.jpeg)
+
 ---
 
 ## Table of contents
@@ -126,7 +128,7 @@ flowchart TB
   TG["Telegram Bot API"]
 
   UI <--> REST
-  MON <-. live events .- WS
+  WS -. live events .-> MON
   REST --> RS --> EX --> AG --> GW --> LLMP
   EX --> TR --> TG
   AG <--> BUS
@@ -135,9 +137,6 @@ flowchart TB
   CH --> RS
   SCH --> RS
   CFG --> REST
-
-  classDef p fill:#1e1b4b,stroke:#6d5efc,color:#fff;
-  class RT,API p;
 ```
 
 **Three planes**
