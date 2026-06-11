@@ -12,9 +12,9 @@
 
 ## 1. Requirement → Component traceability
 
-Every challenge requirement is owned by a component (so nothing is missed):
+Every core requirement is owned by a component (so nothing is missed):
 
-| Challenge requirement | Owned by |
+| Requirement | Owned by |
 |---|---|
 | Agent CRUD (name, role, prompt, model, tools, channels) | API `agents` router + `Agent` model + Agents UI |
 | Agent config (schedules, memory, skills, interaction rules, guardrails, limits) | `Agent` model + Runtime (memory, guardrails, scheduler) |
@@ -62,7 +62,7 @@ Two human actors: the **operator** (builds/monitors via the web UI) and the **en
 
 ---
 
-## 3. Component Architecture (the 3 layers the rubric wants)
+## 3. Component Architecture (the 3 layers)
 
 ```mermaid
 flowchart TB
@@ -381,7 +381,7 @@ agent-orchestrator/
 
 ## 10. Resolved design decisions
 
-1. **Memory** — the PDF lists "memory" as a configurable agent dimension (Problem Statement *and* Functional Requirements) but does **not** specify a type. We implement **short-term conversation memory** (rolling per conversation/run) **+ optional per-agent summary memory** (configurable), persisted on `Conversation.summary`. Real, but lean.
+1. **Memory** — "memory" is a configurable agent dimension with no prescribed type. We implement **short-term conversation memory** (rolling per conversation/run) **+ optional per-agent summary memory** (configurable), persisted on `Conversation.summary`. Real, but lean.
 2. **Tools** — a **Tool Registry with custom user-defined tools** + **agent↔tool mapping** (§4.1), seeded with 3 built-ins (`web_fetch`, `calculator`, `send_telegram`). Mirrors the platform tool-registry pattern.
 3. **Message bus** — **in-process asyncio** queues behind a `MessageBus` interface (best for a single-command local prototype: zero deps, real async agent-to-agent). Redis/Kafka is the documented production swap — the interface makes it a drop-in.
 4. **Auth** — **none for v1** (single local operator); flagged as a production next-step.
@@ -390,15 +390,7 @@ agent-orchestrator/
 
 ---
 
-## 11. Evaluation coverage — every criterion in the PDF
-
-### Grading weights — how the design maximizes each
-| Weight | How we maximize it |
-|---|---|
-| **Working end-to-end demo — 40%** | Real runtime (not a mockup) + 3 seeded templates + a live Telegram chat. Demo script: pick a template → run 2+ agents on a real task → watch the live monitor → talk to an agent on Telegram. |
-| **Architecture & code quality — 30%** | Strict UI/API/Runtime/Persistence separation; `Bus`/`Tool`/`Channel`/`LLM` interfaces (swap-friendly); pytest on the 3 critical paths; README with architecture diagram + runtime-choice justification. |
-| **UI/UX & configurability — 20%** | Visual React Flow builder; rich agent config (role, prompt, model, provider, tools, channels, schedule, memory, guardrails); custom Tool Registry; templates for fast zero-to-workflow. |
-| **Documentation — 10%** | README (arch diagram, setup, runtime justification, "how to add a template / channel / tool") + this HLD + the LLD. |
+## 11. Coverage
 
 ### Functional requirements — all covered
 | Requirement | Design element |

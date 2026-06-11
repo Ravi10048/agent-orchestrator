@@ -21,9 +21,10 @@ data/*
 *.env
 !.env.example
 
-# Internal — not for the public repo (employer/clean-room notes, Claude workspace guide)
+# Internal — not for the public repo (employer/clean-room notes, Claude workspace guide, deploy notes)
 CLAUDE.md
 PROJECT_STATUS.md
+DEPLOY.md
 
 # Node / frontend
 node_modules/

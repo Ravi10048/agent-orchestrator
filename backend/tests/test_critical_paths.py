@@ -1,5 +1,5 @@
-"""LLD 11 — the three critical paths the rubric names, exercised end-to-end against the REAL
-executor/agent/channel code with a mock LLM (deterministic, no API key / network):
+"""The three critical paths (agent creation · workflow execution · message delivery), exercised
+end-to-end against the REAL executor/agent/channel code with a mock LLM (deterministic, no API key / network):
 
   1. Agent creation     — POST /api/agents persists config + tool mapping; reload is intact.
   2. Workflow execution — template T1 runs incl. ONE feedback loop → completed, ≥2 agents, events.

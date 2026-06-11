@@ -7,7 +7,7 @@ Turn `Tool` records into **OpenAI function specs** the LLM can call, and **execu
 - **`builtin`** — a registered Python function (seeded: `web_fetch`, `calculator`, `send_telegram`).
 - **`http`** — a **user-defined REST call** created in the UI with no code (method, URL template, headers/auth, body mapping).
 
-An agent only ever sees/executes the tools **mapped to it** (`agent.tools` — the allow-list, = the PDF's "skills"). The runtime *executes real tools* (the "not a UI mockup" requirement).
+An agent only ever sees/executes the tools **mapped to it** (`agent.tools` — the allow-list, = the agent's "skills"). The runtime *executes real tools* (real tools, not a mockup).
 
 ## Files
 ```
@@ -174,7 +174,7 @@ for call in res.tool_calls:                      # call.name, call.arguments(dic
 ```
 Allow-list is enforced here (resolve names only within `agent.tools`); the executor stays generic.
 
-## "How to add a tool" (the challenge asks for this — goes in README)
+## "How to add a tool" (goes in README)
 - **HTTP tool (no code):** create a `Tool` in the UI → set `type=http`, `endpoint` (with `{placeholders}`), `http_method`, `params_schema`, optional `headers`/`auth` → map it to an agent. Done.
 - **Built-in tool (code):** add an `@builtin("key")` async function in `tools/builtins/`, add a `seed.py` entry (or create the `Tool` row via UI with `builtin_key="key"`). Done.
 

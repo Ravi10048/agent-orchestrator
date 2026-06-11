@@ -99,7 +99,7 @@ docker compose up --build      # backend :8000, frontend :5173 (nginx), seed run
 **`conftest.py`:** in-memory SQLite engine + `Base.metadata.create_all`, `TestClient(app)`, a **mock-LLM fixture** (`monkeypatch app.llm.complete` with scripted `LLMResult`s — deterministic, no network/keys), and a `seeded_db` fixture.
 **Per-module** suites are owned by their LLDs (`test_models … test_scheduler … test_api`).
 **`test_seed.py`:** `run_seed` is idempotent (re-run → stable counts); **both templates pass `validate_graph`**; agent↔tool mappings resolve.
-**`test_critical_paths.py`** — the three the rubric names:
+**`test_critical_paths.py`** — the three critical paths:
 1. **Agent creation:** `POST /api/agents` (with tools/guardrails/memory) → 201; reload → tool mapping intact.
 2. **Workflow execution:** scripted mock-LLM drives **T1** including **one feedback loop** (Writer `needs_more=true` → Researcher visit 2 → final report); assert `Run.status=completed`, ≥2 agents ran, token totals > 0, ordered events emitted, output captured.
 3. **Message delivery:** an inbound Telegram update → `dispatch_inbound` (mock `getUpdates`/`send`) → `Conversation` created with `agent_id`, inbound+outbound `Message` rows persisted, reply sent.
@@ -110,7 +110,7 @@ docker compose up --build      # backend :8000, frontend :5173 (nginx), seed run
 3. **Quickstart** — the one command + the GROQ/Telegram key steps (how to get them, free).
 4. **Runtime choice — why a custom runtime** (the LLD 05/06 justification + the "why not LangGraph" talking points; how routing rides native tool-calling).
 5. **Concepts** — agents, tools (custom HTTP), workflows (graph: conditions + loops), runs, channels, schedules, the live monitor.
-6. **How to extend** — add a workflow template · add a messaging channel (the `Channel` ABC) · add a tool (HTTP in the UI / built-in in code). *(Rubric explicitly asks for this.)*
+6. **How to extend** — add a workflow template · add a messaging channel (the `Channel` ABC) · add a tool (HTTP in the UI / built-in in code).
 7. **Testing** — `make test` + the 3 critical paths.
 8. **Production next-steps** (the tradeoffs to discuss live) — parallel executor + barrier joins, real broker bus (Kafka/Rabbit) + DLQ, Postgres, auth/RBAC/multi-tenancy, webhooks + WhatsApp/Slack, distributed scheduler, secrets manager, observability stack.
 

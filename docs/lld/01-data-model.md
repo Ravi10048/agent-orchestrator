@@ -95,7 +95,7 @@ class Agent(Base):
     updated_at: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
     tools: Mapped[list["Tool"]] = relationship(secondary=agent_tools, lazy="selectin")
 ```
-> "skills" (from the PDF) = the agent's mapped `tools`. "interaction rules" = the workflow edges/conditions (LLD 06), not stored on the agent.
+> "skills" = the agent's mapped `tools`. "interaction rules" = the workflow edges/conditions (LLD 06), not stored on the agent.
 > **Memory:** short-term = recent `Message` history fetched by `conversation_id`; optional **summary memory** is persisted on `Conversation.summary` (channel chats).
 
 ### Tool — `models/tool.py`

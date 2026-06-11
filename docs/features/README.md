@@ -139,7 +139,7 @@ source, and fans out over `/ws/monitor`; the client gap-fills via `GET /runs/{id
 
 ### 7. Dashboard analytics
 **What:** a tenant-aware cockpit — live **total tokens · est. cost · avg run duration · conversations**,
-plus charts (tokens/cost per run, runs-over-time, a completion-rate gauge) and the 4 challenge
+plus charts (tokens/cost per run, runs-over-time, a completion-rate gauge) and the four headline
 **impact metrics**.
 **Use:** the **Dashboard** page; switch orgs via the sidebar to re-scope every number.
 **How:** a pure, unit-tested helper reduces the tenant-scoped runs/conversations into the headline +

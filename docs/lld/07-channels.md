@@ -3,7 +3,7 @@
 > The human↔agent messaging layer. Depends on [LLD 01](01-data-model.md) (Conversation, Message), [LLD 05](05-agent.md) (AgentRunner, 1:1 mode), [LLD 03](03-tools.md) (`send_telegram`). Status: **for review** — *hardened by the design + adversarial-review pass (must-fixes folded in).*
 
 ## Responsibility
-Let a human talk to an agent over a **free** external channel. v1 = **Telegram** via **long-polling** (`getUpdates` — no public webhook, fully local). Inbound message → find/create a `Conversation` (chat→agent binding) → run the bound agent in **1:1 mode** (`AgentRunner`, LLD 05) → persist inbound+outbound `Message` rows (visible in the UI) → reply. A `Channel` ABC + registry make "add a new channel" a clean extension point (the rubric asks for this), and the `send_telegram` builtin tool reaches the **same** adapter.
+Let a human talk to an agent over a **free** external channel. v1 = **Telegram** via **long-polling** (`getUpdates` — no public webhook, fully local). Inbound message → find/create a `Conversation` (chat→agent binding) → run the bound agent in **1:1 mode** (`AgentRunner`, LLD 05) → persist inbound+outbound `Message` rows (visible in the UI) → reply. A `Channel` ABC + registry make "add a new channel" a clean extension point, and the `send_telegram` builtin tool reaches the **same** adapter.
 
 ## Files
 ```
@@ -149,7 +149,7 @@ async def dispatch_inbound(inb: InboundMessage, *, session_factory, emit=lambda 
 ## Concurrency note
 Updates are dispatched **sequentially in `update_id` order** by the single poll loop, so messages from one chat are processed in order. (Per-chat serialization is therefore automatic in v1; a future webhook/multi-worker setup would add an explicit per-chat lock.)
 
-## How to add a new channel (the rubric's extension point — for README)
+## How to add a new channel (extension point — for README)
 1. Subclass `Channel` (implement `start/stop/send/handle_update` returning a normalised `InboundMessage`).
 2. `register_channel(MyChannel(token, dispatch_inbound))` at startup when its token env var is set.
 3. That's it — `dispatch_inbound`, `Conversation`, persistence, and the monitor are all channel-agnostic. (Slack = socket-mode adapter; WhatsApp = Twilio/Meta webhook adapter — both just implement the ABC.)

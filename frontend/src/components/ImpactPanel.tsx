@@ -7,7 +7,7 @@ import { useRuns } from "@/hooks/queries";
 // the configurable dimensions exposed per agent (mirrors the agent editor)
 const DIMENSIONS = 9; // role · system prompt · provider · model · tools · channels · memory · guardrails · schedule
 
-/** Surfaces the four "Impact Metrics" the challenge names — so the platform's value is legible
+/** Surfaces the four "Impact Metrics" — so the platform's value is legible
  *  at a glance. Completion rate is live (from runs, via the shared stats helper so it matches the
  *  Dashboard gauge); the others are platform properties. */
 export function ImpactPanel() {

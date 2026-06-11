@@ -7,7 +7,7 @@
 > everything stream in a **live monitor** (timeline · inter-agent messages · token/cost).
 > Runs **fully local with one command**.
 
-Built for the Yuno AI-Engineer challenge. Stack is **all free**: FastAPI + a custom
+A personal project exploring multi-agent orchestration. Stack is **all free**: FastAPI + a custom
 graph-executor runtime + SQLite + **Groq** (free LLM) + **Telegram** (free channel) +
 React 19 / React Flow.
 
@@ -58,8 +58,7 @@ route **each turn** in real time. Each tenant is fully isolated; a new one start
 | **Persisted history** — runs, events, and conversations all stored and visible | Runs / Conversations |
 
 ### Impact metrics
-The challenge names four impact metrics; here's how the platform delivers each (the Dashboard
-surfaces them live in an **Impact** panel):
+Four metrics that surface the platform's value at a glance (live on the Dashboard's **Impact** panel):
 
 | Metric | How it's delivered |
 |---|---|
@@ -68,11 +67,11 @@ surfaces them live in an **Impact** panel):
 | **End-to-end task completion rate** | Live: completed ÷ total runs (shown on the Dashboard) |
 | **Agent-to-agent message reliability** | **At-least-once** — the in-process bus drains per-agent inboxes; the Telegram channel advances its offset only *after* handling; all messages are persisted and visible |
 
-### Requirements coverage
-Every requirement in the challenge brief, mapped to where it lives and its test (✓ = done):
+### Capabilities & tests
+Every core capability, mapped to where it lives and its test:
 
-| Challenge requirement | Where it's implemented | Test |
-|---|---|---|
+| Capability | Where it's implemented | Test |
+|---|---|---|ok 
 | ✓ Agent CRUD (name·role·prompt·model·tools·channels) | `api/routers/agents.py` · Agents page/editor | `test_critical_paths.py` (agent creation) |
 | ✓ Agent config (schedules·memory·skills·rules·guardrails) | `models/agent.py` · Agent editor | `test_api.py`, `test_scheduler.py` |
 | ✓ Visual workflow builder + **conditions + feedback loops** | `pages/WorkflowBuilder.tsx` · `runtime/executor.py` (`eval_condition`, `max_visits`) | `test_executor.py` |
@@ -212,7 +211,7 @@ A ~90-second end-to-end run, all visible in the UI:
 
 ## 4. Why a custom runtime
 
-The challenge allows any runtime; I built a **custom graph executor** rather than adopting
+I built a **custom graph executor** rather than adopting
 LangGraph/AutoGen/CrewAI. Reasoning:
 
 - **Explicit and reviewable.** The orchestration *is* the product here, so the control flow —
@@ -307,8 +306,7 @@ cd frontend && tsc --noEmit && vitest run && vite build   # frontend type-check 
 Per-module suites cover each LLD layer (models, LLM gateway, tools, bus, agent, executor,
 channels, scheduler, API) plus multi-tenancy and the conversational per-turn routing
 (`test_conversation_routing.py`). On top, **`test_seed.py`** (idempotency, all 3 templates pass
-`validate_graph`, agent↔tool mappings, the sample tenant) and **`test_critical_paths.py`** exercise the three paths
-the rubric names, against the **real** executor/agent/channel code with a **mock LLM** (no API key
+`validate_graph`, agent↔tool mappings, the sample tenant) and **`test_critical_paths.py`** exercise the three core paths, against the **real** executor/agent/channel code with a **mock LLM** (no API key
 or network needed):
 
 1. **Agent creation** — `POST /api/agents` with tools/guardrails/memory → 201; reload is intact.
