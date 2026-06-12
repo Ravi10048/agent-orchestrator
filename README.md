@@ -11,6 +11,10 @@ A personal project exploring multi-agent orchestration. Stack is **all free**: F
 graph-executor runtime + SQLite + **Groq** (free LLM) + **Telegram** (free channel) +
 React 19 / React Flow.
 
+**🔗 Live demo: [agent-orchestrator-ravi10048.vercel.app](https://agent-orchestrator-ravi10048.vercel.app/)**
+&nbsp;·&nbsp; frontend on Vercel, API on Render (free tier — the backend sleeps when idle, so the
+**first** request after a pause can take ~30–50s to wake; it's instant after that).
+
 ![Agent Orchestrator — the live, tenant-aware Dashboard](docs/img/app-screenshot.jpeg)
 
 ---
