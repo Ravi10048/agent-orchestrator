@@ -41,6 +41,13 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_TOKEN: str = ""
     TELEGRAM_POLL_TIMEOUT: int = 30
 
+    # ── Demo mock API (IKEA tenant tools) ────────────────────────────
+    # Locally the mock runs as a SEPARATE service on :8001 (`make mock`), so the IKEA HTTP tools hit a
+    # genuinely external API. For a single-service cloud deploy (e.g. Render), set MOUNT_MOCK_API=true to
+    # serve the mock in-process at /api/mock, and point MOCK_API_BASE at it (…/api/mock).
+    MOUNT_MOCK_API: bool = False
+    MOCK_API_BASE: str = "http://localhost:8001/mock"
+
     # ── Scheduler (LLD 08) ───────────────────────────────────────────
     SCHEDULER_TIMEZONE: str = "UTC"
     SCHEDULER_MISFIRE_GRACE: int = 3600

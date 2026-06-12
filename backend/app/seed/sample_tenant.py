@@ -5,15 +5,17 @@ Riya is a Supervisor/router on WhatsApp: she reads a stalled cart + the customer
 to the specialist that resolves it (Pricing & EMI · Delivery · Payments · Product · Retention · Care).
 The specialists use IKEA HTTP tools — backed by the in-app mock API (api/routers/mock.py) — to look up
 the cart/pincode/stock/EMI, generate a secure checkout link, set reminders, or escalate to a human."""
+from app.core.config import settings
 from app.models import Agent, Tool, Workflow
 from app.runtime.executor import GraphExecutor
 from app.runtime.tools.seed import seed_tools
 from app.seed.agents import upsert_agents
 from app.seed.tenants import get_or_create_tenant
 
-# the IKEA HTTP tools call the STANDALONE mock API (app/mock_api.py, `make mock`, :8001) — a separate
-# service, so the tools hit a genuinely external API. In prod these are the tenant's real REST URLs.
-MOCK = "http://localhost:8001/mock"
+# the IKEA HTTP tools call the mock API — locally a STANDALONE service (app/mock_api.py, `make mock`,
+# :8001), so the tools hit a genuinely external API. In a single-service cloud deploy, MOCK_API_BASE
+# points at the in-process mock (…/api/mock). In prod these are the tenant's real REST URLs.
+MOCK = settings.MOCK_API_BASE
 _GUARD = {"max_steps": 5, "max_tokens": 1024, "max_tokens_total": 8000, "timeout_s": 60}
 _MEM = {"type": "short_term", "window": 12, "summary": False}
 _MODEL = "llama-3.3-70b-versatile"

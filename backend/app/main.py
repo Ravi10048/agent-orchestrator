@@ -81,6 +81,12 @@ def create_app() -> FastAPI:
     )
     install_exception_handlers(app)
     app.include_router(api_router)
+    if settings.MOUNT_MOCK_API:
+        # single-service cloud deploys: serve the demo IKEA/payments mock in-process at /api/mock/*
+        # (locally it runs as a separate :8001 service instead). Point MOCK_API_BASE at …/api/mock.
+        from app.api.routers.mock import router as mock_router
+
+        app.include_router(mock_router, prefix="/api")
     app.add_api_websocket_route("/ws/monitor", monitor_ws_endpoint)
 
     @app.get("/health", tags=["meta"])  # root health for container/ops probes (also at /api/health)
