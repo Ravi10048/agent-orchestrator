@@ -3,8 +3,10 @@ fully enumerated in LLD 09 §config). Implemented in full here so later modules 
 their keys without re-editing this file."""
 from __future__ import annotations
 
+from typing import Annotated
+
 from pydantic import field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -19,7 +21,9 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     HOST: str = "0.0.0.0"
     PORT: int = 8000
-    CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+    # NoDecode: don't JSON-parse the raw env value (so CORS_ORIGINS=* or a CSV is accepted);
+    # the validator below splits it. Without this, pydantic-settings tries json.loads("*") → crash.
+    CORS_ORIGINS: Annotated[list[str], NoDecode] = ["http://localhost:5173"]
 
     # ── Persistence ──────────────────────────────────────────────────
     DATABASE_URL: str = "sqlite:///./data/app.db"
