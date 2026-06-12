@@ -71,8 +71,12 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     configure_logging(settings.LOG_LEVEL)
     app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)  # FastAPI's built-in JSON path is fast
+    # CORS_ORIGINS="*" allows any origin (handy when the frontend host changes between deploys).
+    # The browser forbids "*" together with credentials, so credentials are only enabled for an
+    # explicit allow-list. We auth via the X-Tenant-Id header (no cookies), so "*" is safe here.
+    allow_all = "*" in settings.CORS_ORIGINS
     app.add_middleware(
-        CORSMiddleware, allow_origins=settings.CORS_ORIGINS, allow_credentials=True,
+        CORSMiddleware, allow_origins=settings.CORS_ORIGINS, allow_credentials=not allow_all,
         allow_methods=["*"], allow_headers=["*"],
     )
     install_exception_handlers(app)
