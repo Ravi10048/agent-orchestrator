@@ -57,8 +57,12 @@ export function useMonitorSocket(runId: number | null) {
     const connect = () => {
       if (stopped.current) return;
       setStatus("connecting");
-      const proto = location.protocol === "https:" ? "wss:" : "ws:";
-      const socket = new WebSocket(`${proto}//${location.host}/ws/monitor`);
+      // same-origin locally; in a split deploy, derive ws(s):// from VITE_API_URL (the backend host)
+      const apiBase = import.meta.env.VITE_API_URL;
+      const wsBase = apiBase
+        ? apiBase.replace(/^http/, "ws")
+        : `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}`;
+      const socket = new WebSocket(`${wsBase}/ws/monitor`);
       ws.current = socket;
 
       socket.onopen = async () => {

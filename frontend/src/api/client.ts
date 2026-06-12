@@ -12,7 +12,9 @@ export interface ApiError {
   fieldErrors?: Record<string, string>;
 }
 
-export const api = axios.create({ baseURL: "/api" });
+// VITE_API_URL is set for split deploys (frontend + backend on different hosts); empty locally,
+// where nginx (Docker) / Vite (dev) proxy /api → backend on the same origin.
+export const api = axios.create({ baseURL: (import.meta.env.VITE_API_URL ?? "") + "/api" });
 
 // scope every request to the active tenant (multi-tenant SaaS)
 api.interceptors.request.use((config) => {
